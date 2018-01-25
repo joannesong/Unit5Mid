@@ -2,6 +2,7 @@ package nyc.c4q.unit5midassesssment;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         UserService userService = retrofit.create(UserService.class);
-        Call<User> userCall = userService.getInfo(us, info, results);
+        Call<User> userCall = userService.getInfo();
         userCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -53,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     nameList = (List<Results>) user.getResults().get(i).getName();
                     pictureList = (List<Results>) user.getResults().get(i).getPicture();
                 }
-
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.d("FAIL", t.toString());
