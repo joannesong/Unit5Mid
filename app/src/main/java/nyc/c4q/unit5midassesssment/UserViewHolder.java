@@ -19,25 +19,15 @@ import nyc.c4q.unit5midassesssment.model.User;
  */
 
 public class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private ImageView imageLeft;
-    private TextView textLeft;
-    private ImageView imageRight;
-    private TextView textRight;
+    ImageView image;
+    TextView text;
     private Context context;
 
     public UserViewHolder(View itemView) {
         super(itemView);
-        imageLeft = itemView.findViewById(R.id.image_user1);
-        imageRight = itemView.findViewById(R.id.image_user2);
-        textLeft = itemView.findViewById(R.id.text_user1);
-        textRight = itemView.findViewById(R.id.text_user2);
+        image = itemView.findViewById(R.id.image_user);
+        text = itemView.findViewById(R.id.text_user);
         itemView.setOnClickListener(this);
-    }
-
-    public void onBind(Name name, Picture picture){
-        imageRight.setImageResource(Integer.parseInt(picture.getThumbnail()));
-        textRight.setText(name.getFirst() + " " + name.getLast());
-
     }
 
     @Override
@@ -51,6 +41,6 @@ public class UserViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         View r = v.findViewById(R.id.recycler);
         r.setVisibility(View.GONE);
         fragmentTransaction.commit();
-
     }
+
 }

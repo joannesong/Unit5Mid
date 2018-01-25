@@ -24,19 +24,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    String us = "us";
-    String info = "name,location,cell,email,dob,picture";
-    int results = 20;
-
+    private List<Results> userList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,13 +46,10 @@ public class MainActivity extends AppCompatActivity {
         userCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                User user = (User) response.body();
-                List<Results> nameList;
-                List<Results> pictureList;
-                for(int i = 0; i< 21; i++){
-                    nameList = (List<Results>) user.getResults().get(i).getName();
-                    pictureList = (List<Results>) user.getResults().get(i).getPicture();
-                }
+                userList = response.body().getResults();
+                UserAdapter userAdapter = new UserAdapter(userList);
+                recyclerView.setAdapter(userAdapter);
+
             }
             @Override
             public void onFailure(Call<User> call, Throwable t) {
